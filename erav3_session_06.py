@@ -82,8 +82,8 @@ train_transforms = A.Compose([
     A.GaussNoise(var_limit=(5.0, 30.0), p=0.4),
     A.Perspective(scale=(0.05, 0.1), p=0.4, keep_size=True, pad_mode=cv2.BORDER_CONSTANT, pad_val=0),
 
-    A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2, p=0.3),
-    A.Blur(blur_limit=3, p=0.2),
+    #A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2, p=0.3),
+    #A.Blur(blur_limit=3, p=0.2),
     
     A.ElasticTransform(
         alpha=1.0,
@@ -204,7 +204,7 @@ if __name__ == '__main__':
     use_cuda = torch.cuda.is_available()
     device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if use_cuda else "cpu")
     torch.manual_seed(1456)
-    batch_size = 64
+    batch_size = 512
     kwargs = {'num_workers': 4, 'pin_memory': True} if device.type in ["cuda", "mps"] else {}
 
     # 2. Create data loaders (do this only once)
@@ -221,47 +221,86 @@ if __name__ == '__main__':
     summary(model, input_size=(1, 1, 28, 28), device=device)
 
     # 4. Setup optimizers and schedulers
+    # swa_model = AveragedModel(model)
+    # optimizer = optim.SGD(model.parameters(), 
+    #                      lr=0.001,
+    #                      momentum=0.9,
+    #                      weight_decay=5e-4,
+    #                      nesterov=True)
+    # scheduler = torch.optim.lr_scheduler.OneCycleLR(
+    #     optimizer,
+    #     max_lr=0.25,
+    #     epochs=15,
+    #     steps_per_epoch=len(train_loader),
+    #     pct_start=0.3,
+    #     div_factor=25,
+    #     final_div_factor=1e4
+    # )
+
+    # swa_start = 6
+    # swa_scheduler = SWALR(optimizer, swa_lr=0.0005)
+
+    # # 5. Training loop
+    # warmup_epochs = 2
+    # warmup_lr_scheduler = torch.optim.lr_scheduler.LinearLR(
+    #     optimizer, 
+    #     start_factor=0.1,
+    #     end_factor=1.0,
+    #     total_iters=warmup_epochs * len(train_loader)
+    # )
+
+    # for epoch in range(1, 15):
+    #     current_lr = optimizer.param_groups[0]['lr']
+    #     print(f'Current learning rate: {current_lr:.6f}')
+        
+    #     if epoch <= warmup_epochs:
+    #         train(model, device, train_loader, optimizer, epoch, warmup_lr_scheduler)
+    #     elif epoch < swa_start:
+    #         train(model, device, train_loader, optimizer, epoch, scheduler)
+    #     else:
+    #         for param_group in optimizer.param_groups:
+    #             param_group['lr'] = 0.001
+    #         train(model, device, train_loader, optimizer, epoch)
+    #         swa_model.update_parameters(model)
+        
+    #     test(model, device, test_loader)
+        
+    #     if epoch >= swa_start:
+    #         torch.optim.swa_utils.update_bn(train_loader, swa_model, device=device)
+    #         test(swa_model, device, test_loader)
+    
+
+    model = Net().to(device)
+
     swa_model = AveragedModel(model)
-    optimizer = optim.SGD(model.parameters(), 
-                         lr=0.001,
-                         momentum=0.9,
-                         weight_decay=5e-4,
-                         nesterov=True)
+
+    # Use OneCycleLR scheduler for better convergence
+    optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=1e-4)
     scheduler = torch.optim.lr_scheduler.OneCycleLR(
         optimizer,
-        max_lr=0.25,
-        epochs=15,
+        max_lr=0.4,
+        epochs=15,                          # Increased epochs
         steps_per_epoch=len(train_loader),
-        pct_start=0.3,
-        div_factor=25,
-        final_div_factor=1e4
+        pct_start=0.3,                      # Warm up for 30% of training
+        div_factor=10,                      # Initial lr = max_lr/10
+        final_div_factor=100                # Final lr = initial_lr/100
     )
 
-    swa_start = 6
-    swa_scheduler = SWALR(optimizer, swa_lr=0.0005)
+    # Start SWA later in training
+    swa_start = 5
+    swa_scheduler = SWALR(optimizer, swa_lr=0.001)
 
-    # 5. Training loop
-    warmup_epochs = 2
-    warmup_lr_scheduler = torch.optim.lr_scheduler.LinearLR(
-        optimizer, 
-        start_factor=0.1,
-        end_factor=1.0,
-        total_iters=warmup_epochs * len(train_loader)
-    )
-
-    for epoch in range(1, 15):
+    for epoch in range(1, 15):  # Increased to 20 epochs
+        # Get current learning rate
         current_lr = optimizer.param_groups[0]['lr']
         print(f'Current learning rate: {current_lr:.6f}')
         
-        if epoch <= warmup_epochs:
-            train(model, device, train_loader, optimizer, epoch, warmup_lr_scheduler)
-        elif epoch < swa_start:
+        if epoch < swa_start:
             train(model, device, train_loader, optimizer, epoch, scheduler)
         else:
-            for param_group in optimizer.param_groups:
-                param_group['lr'] = 0.001
             train(model, device, train_loader, optimizer, epoch)
             swa_model.update_parameters(model)
+            swa_scheduler.step()
         
         test(model, device, test_loader)
         
