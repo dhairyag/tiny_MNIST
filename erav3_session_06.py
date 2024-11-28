@@ -63,7 +63,7 @@ device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if 
 torch.manual_seed(1456)
 batch_size = 512
 
-kwargs = {'num_workers': 2, 'pin_memory': True} if device.type in ["cuda", "mps"] else {}
+kwargs = {'num_workers': 4, 'pin_memory': True} if device.type in ["cuda", "mps"] else {}
 
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
@@ -73,35 +73,36 @@ import random
 # Define the augmentation pipeline
 train_transforms = A.Compose([
     A.ShiftScaleRotate(
-        shift_limit=0.0625,
-        scale_limit=0.1,
-        rotate_limit=15,
-        p=0.7,
+        shift_limit=0.1,
+        scale_limit=0.15,
+        rotate_limit=20,
+        p=0.8,
         border_mode=cv2.BORDER_CONSTANT,
         value=0
     ),
-    A.GridDistortion(num_steps=5, distort_limit=0.2, p=0.3),
-    A.GaussNoise(var_limit=(5.0, 30.0), p=0.3),
-    A.Perspective(scale=(0.05, 0.1), p=0.3, keep_size=True, pad_mode=cv2.BORDER_CONSTANT, pad_val=0),
+    A.GridDistortion(num_steps=5, distort_limit=0.3, p=0.4),
+    A.GaussNoise(var_limit=(10.0, 50.0), p=0.4),
+    A.Perspective(scale=(0.05, 0.15), p=0.4, keep_size=True, pad_mode=cv2.BORDER_CONSTANT, pad_val=0),
 
+    A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2, p=0.3),
+    A.Blur(blur_limit=3, p=0.2),
+    
     A.ElasticTransform(
-         alpha=1.0,
-         sigma=10.0,
-         #alpha_affine=None,  # Set to None as required by newer versions
-         interpolation=cv2.INTER_LINEAR,
-         border_mode=cv2.BORDER_CONSTANT,
-         value=0,
-         p=0.3
+        alpha=1.2,
+        sigma=12.0,
+        interpolation=cv2.INTER_LINEAR,
+        border_mode=cv2.BORDER_CONSTANT,
+        value=0,
+        p=0.4
     ),
     
-    # CoarseDropout as alternative to regular dropout
     A.CoarseDropout(
-        max_holes=2,
-        max_height=8,
-        max_width=8,
+        max_holes=3,
+        max_height=10,
+        max_width=10,
         min_holes=1,
         fill_value=0,
-        p=0.2
+        p=0.3
     ),
 
     A.Normalize(
@@ -223,26 +224,40 @@ if __name__ == '__main__':
 
     # 4. Setup optimizers and schedulers
     swa_model = AveragedModel(model)
-    optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9, weight_decay=1e-4)
+    optimizer = optim.SGD(model.parameters(), 
+                         lr=0.001,
+                         momentum=0.9,
+                         weight_decay=5e-4,
+                         nesterov=True)
     scheduler = torch.optim.lr_scheduler.OneCycleLR(
         optimizer,
-        max_lr=0.2,
-        epochs=15,
+        max_lr=0.25,
+        epochs=25,
         steps_per_epoch=len(train_loader),
-        pct_start=0.3,
-        div_factor=25,
+        pct_start=0.25,
+        div_factor=30,
         final_div_factor=1e4
     )
 
-    swa_start = 8
-    swa_scheduler = SWALR(optimizer, swa_lr=0.0001)
+    swa_start = 15
+    swa_scheduler = SWALR(optimizer, swa_lr=0.0005)
 
     # 5. Training loop
-    for epoch in range(1, 16):
+    warmup_epochs = 2
+    warmup_lr_scheduler = torch.optim.lr_scheduler.LinearLR(
+        optimizer, 
+        start_factor=0.1,
+        end_factor=1.0,
+        total_iters=warmup_epochs * len(train_loader)
+    )
+
+    for epoch in range(1, 26):
         current_lr = optimizer.param_groups[0]['lr']
         print(f'Current learning rate: {current_lr:.6f}')
         
-        if epoch < swa_start:
+        if epoch <= warmup_epochs:
+            train(model, device, train_loader, optimizer, epoch, warmup_lr_scheduler)
+        elif epoch < swa_start:
             train(model, device, train_loader, optimizer, epoch, scheduler)
         else:
             for param_group in optimizer.param_groups:
