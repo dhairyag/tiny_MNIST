@@ -74,13 +74,13 @@ train_transforms = A.Compose([
         shift_limit=0.0625,
         scale_limit=0.1,
         rotate_limit=15,
-        p=0.8,
+        p=0.7,
         border_mode=cv2.BORDER_CONSTANT,
         value=0
     ),
-    A.GridDistortion(num_steps=5, distort_limit=0.3, p=0.4),
-    A.GaussNoise(var_limit=(5.0, 30.0), p=0.4),
-    A.Perspective(scale=(0.05, 0.1), p=0.4, keep_size=True, pad_mode=cv2.BORDER_CONSTANT, pad_val=0),
+    A.GridDistortion(num_steps=5, distort_limit=0.3, p=0.3),
+    A.GaussNoise(var_limit=(5.0, 30.0), p=0.3),
+    A.Perspective(scale=(0.05, 0.1), p=0.3, keep_size=True, pad_mode=cv2.BORDER_CONSTANT, pad_val=0),
 
     #A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2, p=0.3),
     #A.Blur(blur_limit=3, p=0.2),
@@ -91,7 +91,7 @@ train_transforms = A.Compose([
         interpolation=cv2.INTER_LINEAR,
         border_mode=cv2.BORDER_CONSTANT,
         value=0,
-        p=0.4
+        p=0.3
     ),
     
     A.CoarseDropout(
@@ -100,7 +100,7 @@ train_transforms = A.Compose([
         max_width=8,
         min_holes=1,
         fill_value=0,
-        p=0.3
+        p=0.2
     ),
 
     A.Normalize(
