@@ -60,10 +60,8 @@ device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if 
 
 
 
-torch.manual_seed(1456)
-batch_size = 512
 
-kwargs = {'num_workers': 4, 'pin_memory': True} if device.type in ["cuda", "mps"] else {}
+#kwargs = {'num_workers': 4, 'pin_memory': True} if device.type in ["cuda", "mps"] else {}
 
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
@@ -73,23 +71,23 @@ import random
 # Define the augmentation pipeline
 train_transforms = A.Compose([
     A.ShiftScaleRotate(
-        shift_limit=0.1,
-        scale_limit=0.15,
-        rotate_limit=20,
+        shift_limit=0.0625,
+        scale_limit=0.1,
+        rotate_limit=15,
         p=0.8,
         border_mode=cv2.BORDER_CONSTANT,
         value=0
     ),
     A.GridDistortion(num_steps=5, distort_limit=0.3, p=0.4),
-    A.GaussNoise(var_limit=(10.0, 50.0), p=0.4),
-    A.Perspective(scale=(0.05, 0.15), p=0.4, keep_size=True, pad_mode=cv2.BORDER_CONSTANT, pad_val=0),
+    A.GaussNoise(var_limit=(5.0, 30.0), p=0.4),
+    A.Perspective(scale=(0.05, 0.1), p=0.4, keep_size=True, pad_mode=cv2.BORDER_CONSTANT, pad_val=0),
 
     A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2, p=0.3),
     A.Blur(blur_limit=3, p=0.2),
     
     A.ElasticTransform(
-        alpha=1.2,
-        sigma=12.0,
+        alpha=1.0,
+        sigma=10.0,
         interpolation=cv2.INTER_LINEAR,
         border_mode=cv2.BORDER_CONSTANT,
         value=0,
@@ -98,8 +96,8 @@ train_transforms = A.Compose([
     
     A.CoarseDropout(
         max_holes=3,
-        max_height=10,
-        max_width=10,
+        max_height=8,
+        max_width=8,
         min_holes=1,
         fill_value=0,
         p=0.3
@@ -206,8 +204,8 @@ if __name__ == '__main__':
     use_cuda = torch.cuda.is_available()
     device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if use_cuda else "cpu")
     torch.manual_seed(1456)
-    batch_size = 512
-    kwargs = {'num_workers': 2, 'pin_memory': True} if device.type in ["cuda", "mps"] else {}
+    batch_size = 64
+    kwargs = {'num_workers': 4, 'pin_memory': True} if device.type in ["cuda", "mps"] else {}
 
     # 2. Create data loaders (do this only once)
     train_loader = torch.utils.data.DataLoader(
@@ -232,14 +230,14 @@ if __name__ == '__main__':
     scheduler = torch.optim.lr_scheduler.OneCycleLR(
         optimizer,
         max_lr=0.25,
-        epochs=25,
+        epochs=15,
         steps_per_epoch=len(train_loader),
-        pct_start=0.25,
-        div_factor=30,
+        pct_start=0.3,
+        div_factor=25,
         final_div_factor=1e4
     )
 
-    swa_start = 15
+    swa_start = 6
     swa_scheduler = SWALR(optimizer, swa_lr=0.0005)
 
     # 5. Training loop
@@ -251,7 +249,7 @@ if __name__ == '__main__':
         total_iters=warmup_epochs * len(train_loader)
     )
 
-    for epoch in range(1, 26):
+    for epoch in range(1, 15):
         current_lr = optimizer.param_groups[0]['lr']
         print(f'Current learning rate: {current_lr:.6f}')
         
