@@ -71,14 +71,14 @@ import cv2
 import random
 # Define the augmentation pipeline
 train_transforms = A.Compose([
-    A.ShiftScaleRotate(
-        #shift_limit=0.02,
-        #scale_limit=0.05,
-        rotate_limit=10,
-        p=0.2,
-        border_mode=cv2.BORDER_CONSTANT,
-        value=0
-    ),
+    # A.ShiftScaleRotate(
+    #     shift_limit=0.02,
+    #     scale_limit=0.05,
+    #     rotate_limit=10,
+    #     p=0.2,
+    #     border_mode=cv2.BORDER_CONSTANT,
+    #     value=0
+    # ),
     # A.ShiftScaleRotate(
     #     shift_limit=0.0625,
     #     scale_limit=0.1,
@@ -316,7 +316,8 @@ if __name__ == '__main__':
     #     if epoch >= swa_start:
     #         torch.optim.swa_utils.update_bn(train_loader, swa_model, device=device)
     #         test(swa_model, device, test_loader)
-    # -----------------------------
+    
+    # --------------------------------------------------------------------------------
     # Tunable parameters
     max_lr = 0.3          # Peak learning rate
     initial_div = 25      # Divisor for initial learning rate (max_lr / initial_div)
@@ -399,7 +400,7 @@ if __name__ == '__main__':
             steps_per_epoch=len(train_loader),
             pct_start=warmup_pct,
             div_factor=initial_div,
-            final_div_factor=final_div
+            final_div_factor=final_div,
         )
 
         # Track best accuracy for this combination
@@ -571,4 +572,23 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------------
     # Parameters: max_lr=0.3, initial_div=20, final_div=50, warmup_pct=0.25, momentum=0.9, weight_decay=8e-06
     # Best Accuracy: 99.21%
+    # --------------------Final Results: A.ShiftScaleRotate(
+    #     shift_limit=0.02,
+    #     scale_limit=0.05,
+    #     rotate_limit=10,
+    #     p=0.2,
+    #     border_mode=cv2.BORDER_CONSTANT,
+    #     value=0
+    # ),
     # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.3, initial_div=20, final_div=50, warmup_pct=0.3, momentum=0.9, weight_decay=1e-05
+    # Best Accuracy: 99.26%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, initial_div=25, final_div=100, warmup_pct=0.5, momentum=0.9, weight_decay=0.0001
+    # Best Accuracy: 99.37%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.3, initial_div=20, final_div=50, warmup_pct=0.25, momentum=0.9, weight_decay=8e-06
+    # Best Accuracy: 99.22%
+    # --------------------------------------------------------------------------------
+
+
