@@ -16,7 +16,8 @@ class Net(nn.Module):
             nn.Conv2d(4, 4, 3, padding=1),  # 4*3*3*4 + 4 = 148 params
             nn.ReLU(),
             nn.BatchNorm2d(4),              # 8 params
-            nn.MaxPool2d(2, 2)
+            nn.MaxPool2d(2, 2),
+            nn.Dropout(0.1)
         )
         
         self.conv2 = nn.Sequential(
@@ -27,7 +28,7 @@ class Net(nn.Module):
             nn.ReLU(),
             nn.BatchNorm2d(8),              # 16 params
             nn.MaxPool2d(2, 2),
-            nn.Dropout(0.1)
+            nn.Dropout(0.10)
         )
         
         self.conv3 = nn.Sequential(
