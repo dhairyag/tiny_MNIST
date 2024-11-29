@@ -28,7 +28,7 @@ class Net(nn.Module):
             nn.ReLU(),
             nn.BatchNorm2d(8),              # 16 params
             nn.MaxPool2d(2, 2),
-            nn.Dropout(0.1)
+            nn.Dropout(0.05)
         )
         
         self.conv3 = nn.Sequential(
@@ -36,7 +36,7 @@ class Net(nn.Module):
             nn.ReLU(),
             nn.BatchNorm2d(12),             # 24 params
             nn.MaxPool2d(2, 2),
-            nn.Dropout(0.15)
+            nn.Dropout(0.05)
         )
         
         # 12 channels * 3 * 3 = 108 neurons after three max pools (28->14->7->3)
