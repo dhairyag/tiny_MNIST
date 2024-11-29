@@ -333,29 +333,44 @@ if __name__ == '__main__':
     # 0.4,	30,	200,	0.5,	0.9,	1e-4
     # 0.5,	50,	300,	0.1,	0.95,	1e-3
     # Define parameter combinations
+    # Parameters: max_lr=0.3, initial_div=20, final_div=50, warmup_pct=0.3, momentum=0.9, weight_decay=1e-05
+    # Best Accuracy: 99.33%
+    # Parameters: max_lr=0.4, initial_div=25, final_div=100, warmup_pct=0.5, momentum=0.9, weight_decay=0.0001
+    # Best Accuracy: 99.32%
     param_combinations = [
         # max_lr, initial_div, final_div, warmup_pct, momentum, weight_decay
-        (0.3, 25, 100, 0.3, 0.9, 1e-4),
-        (0.2, 20, 50, 0.4, 0.95, 1e-5),
-        (0.1, 10, 25, 0.2, 0.85, 5e-5),
-        (0.4, 30, 200, 0.5, 0.9, 1e-4),
-        (0.5, 50, 300, 0.1, 0.95, 1e-3),
-        # Additional combinations
-        (0.3, 20, 50, 0.3, 0.9, 1e-5),
-        (0.3, 10, 25, 0.3, 0.9, 5e-5),
-        (0.3, 30, 200, 0.3, 0.9, 1e-4),
-        (0.2, 25, 100, 0.4, 0.95, 1e-4),
-        (0.2, 10, 25, 0.4, 0.95, 5e-5),
-        (0.2, 30, 200, 0.4, 0.95, 1e-4),
-        (0.1, 25, 100, 0.2, 0.85, 1e-4),
-        (0.1, 20, 50, 0.2, 0.85, 1e-5),
-        (0.1, 30, 200, 0.2, 0.85, 1e-4),
-        (0.4, 25, 100, 0.5, 0.9, 1e-4),
-        (0.4, 20, 50, 0.5, 0.9, 1e-5),
-        (0.4, 10, 25, 0.5, 0.9, 5e-5),
-        (0.5, 25, 100, 0.1, 0.95, 1e-4),
-        (0.5, 20, 50, 0.1, 0.95, 1e-5),
-        (0.5, 10, 25, 0.1, 0.95, 5e-5),
+        # (0.3, 25, 100, 0.3, 0.9, 1e-4),
+        # (0.2, 20, 50, 0.4, 0.95, 1e-5),
+        # (0.1, 10, 25, 0.2, 0.85, 5e-5),
+        # (0.4, 30, 200, 0.5, 0.9, 1e-4),
+        # (0.5, 50, 300, 0.1, 0.95, 1e-3),
+        # # Additional combinations
+        # (0.3, 20, 50, 0.3, 0.9, 1e-5), # Best performing parameters -
+        # (0.3, 10, 25, 0.3, 0.9, 5e-5),
+        # (0.3, 30, 200, 0.3, 0.9, 1e-4),
+        # (0.2, 25, 100, 0.4, 0.95, 1e-4),
+        # (0.2, 10, 25, 0.4, 0.95, 5e-5),
+        # (0.2, 30, 200, 0.4, 0.95, 1e-4),
+        # (0.1, 25, 100, 0.2, 0.85, 1e-4),
+        # (0.1, 20, 50, 0.2, 0.85, 1e-5),
+        # (0.1, 30, 200, 0.2, 0.85, 1e-4),
+        # (0.4, 25, 100, 0.5, 0.9, 1e-4), # Best performing parameters -
+        # (0.4, 20, 50, 0.5, 0.9, 1e-5),
+        # (0.4, 10, 25, 0.5, 0.9, 5e-5),
+        # (0.5, 25, 100, 0.1, 0.95, 1e-4),
+        # (0.5, 20, 50, 0.1, 0.95, 1e-5),
+        # (0.5, 10, 25, 0.1, 0.95, 5e-5),
+        # New combinations exploring around best performing parameters
+        (0.35, 20, 50, 0.3, 0.9, 1e-5),  # Between 0.3 and 0.4 max_lr
+        (0.35, 25, 100, 0.4, 0.9, 1e-5),  # Testing different warmup
+        (0.3, 22, 75, 0.3, 0.9, 1e-5),    # Fine-tuning div factors
+        (0.4, 22, 75, 0.4, 0.9, 1e-5),    # Fine-tuning div factors
+        (0.35, 20, 50, 0.35, 0.92, 1e-5), # Testing intermediate momentum
+        (0.3, 20, 50, 0.25, 0.9, 8e-6),   # Lower warmup, finer weight decay : Best performing parameters
+        (0.4, 25, 75, 0.45, 0.9, 8e-6),   # Balanced div factors
+        (0.35, 18, 45, 0.35, 0.9, 1e-5),  # Lower div factors
+        (0.32, 20, 50, 0.3, 0.9, 1e-5),   # Fine-tuning max_lr
+        (0.38, 22, 60, 0.4, 0.9, 1e-5),   # Balanced parameters
     ]
 
     # Store results
@@ -513,4 +528,39 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------------
     # Parameters: max_lr=0.5, initial_div=10, final_div=25, warmup_pct=0.1, momentum=0.95, weight_decay=5e-05
     # Best Accuracy: 99.13%
+    # --------------------------------------------------------------------------------
+
+    # 2nd round of experiments
+
+    # Final Results:
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.35, initial_div=20, final_div=50, warmup_pct=0.3, momentum=0.9, weight_decay=1e-05
+    # Best Accuracy: 99.09%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.35, initial_div=25, final_div=100, warmup_pct=0.4, momentum=0.9, weight_decay=1e-05
+    # Best Accuracy: 99.28%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.3, initial_div=22, final_div=75, warmup_pct=0.3, momentum=0.9, weight_decay=1e-05
+    # Best Accuracy: 99.23%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, initial_div=22, final_div=75, warmup_pct=0.4, momentum=0.9, weight_decay=1e-05
+    # Best Accuracy: 99.08%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.35, initial_div=20, final_div=50, warmup_pct=0.35, momentum=0.92, weight_decay=1e-05
+    # Best Accuracy: 99.25%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.3, initial_div=20, final_div=50, warmup_pct=0.25, momentum=0.9, weight_decay=8e-06
+    # Best Accuracy: 99.31%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, initial_div=25, final_div=75, warmup_pct=0.45, momentum=0.9, weight_decay=8e-06
+    # Best Accuracy: 99.28%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.35, initial_div=18, final_div=45, warmup_pct=0.35, momentum=0.9, weight_decay=1e-05
+    # Best Accuracy: 99.15%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.32, initial_div=20, final_div=50, warmup_pct=0.3, momentum=0.9, weight_decay=1e-05
+    # Best Accuracy: 99.18%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.38, initial_div=22, final_div=60, warmup_pct=0.4, momentum=0.9, weight_decay=1e-05
+    # Best Accuracy: 99.22%
     # --------------------------------------------------------------------------------
