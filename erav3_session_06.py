@@ -17,7 +17,7 @@ class Net(nn.Module):
             nn.ReLU(),
             nn.BatchNorm2d(4),              # 8 params
             nn.MaxPool2d(2, 2),
-            nn.Dropout(0.1)
+            nn.Dropout(0.05)
         )
         
         self.conv2 = nn.Sequential(
@@ -28,7 +28,7 @@ class Net(nn.Module):
             nn.ReLU(),
             nn.BatchNorm2d(8),              # 16 params
             nn.MaxPool2d(2, 2),
-            nn.Dropout(0.10)
+            nn.Dropout(0.1)
         )
         
         self.conv3 = nn.Sequential(
@@ -36,7 +36,7 @@ class Net(nn.Module):
             nn.ReLU(),
             nn.BatchNorm2d(12),             # 24 params
             nn.MaxPool2d(2, 2),
-            nn.Dropout(0.1)
+            nn.Dropout(0.15)
         )
         
         # 12 channels * 3 * 3 = 108 neurons after three max pools (28->14->7->3)
@@ -47,7 +47,7 @@ class Net(nn.Module):
         x = self.conv2(x)
         x = self.conv3(x)
         x = x.view(-1, 12 * 3 * 3)  # Flatten
-        x = F.dropout(x, p=0.1)
+        x = F.dropout(x, p=0.0)
         x = self.fc1(x)
         return F.log_softmax(x, dim=1)
 
@@ -71,6 +71,14 @@ import cv2
 import random
 # Define the augmentation pipeline
 train_transforms = A.Compose([
+    # A.ShiftScaleRotate(
+    #     #shift_limit=0.02,
+    #     #scale_limit=0.05,
+    #     rotate_limit=7,
+    #     p=0.2,
+    #     border_mode=cv2.BORDER_CONSTANT,
+    #     value=0
+    # ),
     # A.ShiftScaleRotate(
     #     shift_limit=0.0625,
     #     scale_limit=0.1,
