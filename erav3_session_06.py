@@ -319,150 +319,150 @@ if __name__ == '__main__':
     
     # --------------------------------------------------------------------------------
     # Tunable parameters
-    max_lr = 0.3          # Peak learning rate
-    initial_div = 25      # Divisor for initial learning rate (max_lr / initial_div)
-    final_div = 100       # Divisor for final learning rate
-    warmup_pct = 0.3      # Percentage of training for warmup
-    momentum = 0.9        # Momentum for SGD
-    weight_decay = 1e-4   # L2 regularization
-    num_epochs = 15       # Total number of epochs
+    # max_lr = 0.3          # Peak learning rate
+    # initial_div = 25      # Divisor for initial learning rate (max_lr / initial_div)
+    # final_div = 100       # Divisor for final learning rate
+    # warmup_pct = 0.3      # Percentage of training for warmup
+    # momentum = 0.9        # Momentum for SGD
+    # weight_decay = 1e-4   # L2 regularization
+    # num_epochs = 15       # Total number of epochs
 
-    #max_lr,	initial_div,	final_div,	warmup_pct,	momentum,	weight_decay
-    # 0.3,	25,	100,	0.3,	0.9,	1e-4
-    # 0.2,	20,	50,	0.4,	0.95,	1e-5
-    # 0.1,	10,	25,	0.2,	0.85,	5e-5
-    # 0.4,	30,	200,	0.5,	0.9,	1e-4
-    # 0.5,	50,	300,	0.1,	0.95,	1e-3
-    # Define parameter combinations
-    param_combinations = [
-        # max_lr, initial_div, final_div, warmup_pct, momentum, weight_decay
-        # (0.3, 25, 100, 0.3, 0.9, 1e-4),
-        # (0.2, 20, 50, 0.4, 0.95, 1e-5),
-        # (0.1, 10, 25, 0.2, 0.85, 5e-5),
-        # (0.4, 30, 200, 0.5, 0.9, 1e-4),
-        # (0.5, 50, 300, 0.1, 0.95, 1e-3),
-        # # Additional combinations
-        (0.3, 20, 50, 0.3, 0.9, 1e-5), # Best performing parameters - 99.33%
-        # (0.3, 10, 25, 0.3, 0.9, 5e-5),
-        # (0.3, 30, 200, 0.3, 0.9, 1e-4),
-        # (0.2, 25, 100, 0.4, 0.95, 1e-4),
-        # (0.2, 10, 25, 0.4, 0.95, 5e-5),
-        # (0.2, 30, 200, 0.4, 0.95, 1e-4),
-        # (0.1, 25, 100, 0.2, 0.85, 1e-4),
-        # (0.1, 20, 50, 0.2, 0.85, 1e-5),
-        # (0.1, 30, 200, 0.2, 0.85, 1e-4),
-        (0.4, 25, 100, 0.5, 0.9, 1e-4), # Best performing parameters - 99.32%
-        # (0.4, 20, 50, 0.5, 0.9, 1e-5),
-        # (0.4, 10, 25, 0.5, 0.9, 5e-5),
-        # (0.5, 25, 100, 0.1, 0.95, 1e-4),
-        # (0.5, 20, 50, 0.1, 0.95, 1e-5),
-        # (0.5, 10, 25, 0.1, 0.95, 5e-5),
-        # New combinations exploring around best performing parameters
-        # (0.35, 20, 50, 0.3, 0.9, 1e-5),  # Between 0.3 and 0.4 max_lr
-        # (0.35, 25, 100, 0.4, 0.9, 1e-5),  # Testing different warmup
-        # (0.3, 22, 75, 0.3, 0.9, 1e-5),    # Fine-tuning div factors
-        # (0.4, 22, 75, 0.4, 0.9, 1e-5),    # Fine-tuning div factors
-        # (0.35, 20, 50, 0.35, 0.92, 1e-5), # Testing intermediate momentum
-        (0.3, 20, 50, 0.25, 0.9, 8e-6),   # Lower warmup, finer weight decay : Best performing parameters - 99.31%  
-        # (0.4, 25, 75, 0.45, 0.9, 8e-6),   # Balanced div factors
-        # (0.35, 18, 45, 0.35, 0.9, 1e-5),  # Lower div factors
-        # (0.32, 20, 50, 0.3, 0.9, 1e-5),   # Fine-tuning max_lr
-        # (0.38, 22, 60, 0.4, 0.9, 1e-5),   # Balanced parameters
-    ]
+    # #max_lr,	initial_div,	final_div,	warmup_pct,	momentum,	weight_decay
+    # # 0.3,	25,	100,	0.3,	0.9,	1e-4
+    # # 0.2,	20,	50,	0.4,	0.95,	1e-5
+    # # 0.1,	10,	25,	0.2,	0.85,	5e-5
+    # # 0.4,	30,	200,	0.5,	0.9,	1e-4
+    # # 0.5,	50,	300,	0.1,	0.95,	1e-3
+    # # Define parameter combinations
+    # param_combinations = [
+    #     # max_lr, initial_div, final_div, warmup_pct, momentum, weight_decay
+    #     # (0.3, 25, 100, 0.3, 0.9, 1e-4),
+    #     # (0.2, 20, 50, 0.4, 0.95, 1e-5),
+    #     # (0.1, 10, 25, 0.2, 0.85, 5e-5),
+    #     # (0.4, 30, 200, 0.5, 0.9, 1e-4),
+    #     # (0.5, 50, 300, 0.1, 0.95, 1e-3),
+    #     # # Additional combinations
+    #     (0.3, 20, 50, 0.3, 0.9, 1e-5), # Best performing parameters - 99.33%
+    #     # (0.3, 10, 25, 0.3, 0.9, 5e-5),
+    #     # (0.3, 30, 200, 0.3, 0.9, 1e-4),
+    #     # (0.2, 25, 100, 0.4, 0.95, 1e-4),
+    #     # (0.2, 10, 25, 0.4, 0.95, 5e-5),
+    #     # (0.2, 30, 200, 0.4, 0.95, 1e-4),
+    #     # (0.1, 25, 100, 0.2, 0.85, 1e-4),
+    #     # (0.1, 20, 50, 0.2, 0.85, 1e-5),
+    #     # (0.1, 30, 200, 0.2, 0.85, 1e-4),
+    #     (0.4, 25, 100, 0.5, 0.9, 1e-4), # Best performing parameters - 99.32%
+    #     # (0.4, 20, 50, 0.5, 0.9, 1e-5),
+    #     # (0.4, 10, 25, 0.5, 0.9, 5e-5),
+    #     # (0.5, 25, 100, 0.1, 0.95, 1e-4),
+    #     # (0.5, 20, 50, 0.1, 0.95, 1e-5),
+    #     # (0.5, 10, 25, 0.1, 0.95, 5e-5),
+    #     # New combinations exploring around best performing parameters
+    #     # (0.35, 20, 50, 0.3, 0.9, 1e-5),  # Between 0.3 and 0.4 max_lr
+    #     # (0.35, 25, 100, 0.4, 0.9, 1e-5),  # Testing different warmup
+    #     # (0.3, 22, 75, 0.3, 0.9, 1e-5),    # Fine-tuning div factors
+    #     # (0.4, 22, 75, 0.4, 0.9, 1e-5),    # Fine-tuning div factors
+    #     # (0.35, 20, 50, 0.35, 0.92, 1e-5), # Testing intermediate momentum
+    #     (0.3, 20, 50, 0.25, 0.9, 8e-6),   # Lower warmup, finer weight decay : Best performing parameters - 99.31%  
+    #     # (0.4, 25, 75, 0.45, 0.9, 8e-6),   # Balanced div factors
+    #     # (0.35, 18, 45, 0.35, 0.9, 1e-5),  # Lower div factors
+    #     # (0.32, 20, 50, 0.3, 0.9, 1e-5),   # Fine-tuning max_lr
+    #     # (0.38, 22, 60, 0.4, 0.9, 1e-5),   # Balanced parameters
+    # ]
 
-    # Store results
-    results = []
-    num_epochs = 15
+    # # Store results
+    # results = []
+    # num_epochs = 15
 
-    # Run training for each parameter combination
-    for params in param_combinations:
-        max_lr, initial_div, final_div, warmup_pct, momentum, weight_decay = params
-        print(f"\nTraining with parameters:")
-        print(f"max_lr: {max_lr}, initial_div: {initial_div}, final_div: {final_div}")
-        print(f"warmup_pct: {warmup_pct}, momentum: {momentum}, weight_decay: {weight_decay}")
+    # # Run training for each parameter combination
+    # for params in param_combinations:
+    #     max_lr, initial_div, final_div, warmup_pct, momentum, weight_decay = params
+    #     print(f"\nTraining with parameters:")
+    #     print(f"max_lr: {max_lr}, initial_div: {initial_div}, final_div: {final_div}")
+    #     print(f"warmup_pct: {warmup_pct}, momentum: {momentum}, weight_decay: {weight_decay}")
 
-        # Initialize model
-        model = Net().to(device)
+    #     # Initialize model
+    #     model = Net().to(device)
         
-        # Optimizer
-        optimizer = optim.SGD(
-            model.parameters(),
-            lr=max_lr / initial_div,
-            momentum=momentum,
-            weight_decay=weight_decay
-        )
+    #     # Optimizer
+    #     optimizer = optim.SGD(
+    #         model.parameters(),
+    #         lr=max_lr / initial_div,
+    #         momentum=momentum,
+    #         weight_decay=weight_decay
+    #     )
 
-        # Scheduler
-        scheduler = torch.optim.lr_scheduler.OneCycleLR(
-            optimizer,
-            max_lr=max_lr,
-            epochs=num_epochs,
-            steps_per_epoch=len(train_loader),
-            pct_start=warmup_pct,
-            div_factor=initial_div,
-            final_div_factor=final_div,
-        )
+    #     # Scheduler
+    #     scheduler = torch.optim.lr_scheduler.OneCycleLR(
+    #         optimizer,
+    #         max_lr=max_lr,
+    #         epochs=num_epochs,
+    #         steps_per_epoch=len(train_loader),
+    #         pct_start=warmup_pct,
+    #         div_factor=initial_div,
+    #         final_div_factor=final_div,
+    #     )
 
-        # Track best accuracy for this combination
-        best_accuracy = 0.0
+    #     # Track best accuracy for this combination
+    #     best_accuracy = 0.0
 
-        # Training Loop
-        for epoch in range(1, num_epochs + 1):
-            current_lr = optimizer.param_groups[0]['lr']
-            print(f'Epoch {epoch}: Current learning rate: {current_lr:.6f}')
+    #     # Training Loop
+    #     for epoch in range(1, num_epochs + 1):
+    #         current_lr = optimizer.param_groups[0]['lr']
+    #         print(f'Epoch {epoch}: Current learning rate: {current_lr:.6f}')
             
-            train(model, device, train_loader, optimizer, epoch, scheduler)
+    #         train(model, device, train_loader, optimizer, epoch, scheduler)
             
-            # Modified test function to return accuracy
-            model.eval()
-            correct = 0
-            with torch.no_grad():
-                for data, target in test_loader:
-                    data, target = data.to(device), target.to(device)
-                    output = model(data)
-                    pred = output.argmax(dim=1, keepdim=True)
-                    correct += pred.eq(target.view_as(pred)).sum().item()
+    #         # Modified test function to return accuracy
+    #         model.eval()
+    #         correct = 0
+    #         with torch.no_grad():
+    #             for data, target in test_loader:
+    #                 data, target = data.to(device), target.to(device)
+    #                 output = model(data)
+    #                 pred = output.argmax(dim=1, keepdim=True)
+    #                 correct += pred.eq(target.view_as(pred)).sum().item()
             
-            accuracy = 100. * correct / len(test_loader.dataset)
-            print(f'\nTest Accuracy: {accuracy:.2f}%\n')
+    #         accuracy = 100. * correct / len(test_loader.dataset)
+    #         print(f'\nTest Accuracy: {accuracy:.2f}%\n')
             
-            best_accuracy = max(best_accuracy, accuracy)
+    #         best_accuracy = max(best_accuracy, accuracy)
 
-        # Store results for this combination
-        results.append({
-            'params': params,
-            'best_accuracy': best_accuracy
-        })
+    #     # Store results for this combination
+    #     results.append({
+    #         'params': params,
+    #         'best_accuracy': best_accuracy
+    #     })
 
-    # Print and plot final results
-    print("\nFinal Results:")
-    print("-" * 80)
-    for result in results:
-        params = result['params']
-        print(f"Parameters: max_lr={params[0]}, initial_div={params[1]}, final_div={params[2]}, "
-              f"warmup_pct={params[3]}, momentum={params[4]}, weight_decay={params[5]}")
-        print(f"Best Accuracy: {result['best_accuracy']:.2f}%")
-        print("-" * 80)
+    # # Print and plot final results
+    # print("\nFinal Results:")
+    # print("-" * 80)
+    # for result in results:
+    #     params = result['params']
+    #     print(f"Parameters: max_lr={params[0]}, initial_div={params[1]}, final_div={params[2]}, "
+    #           f"warmup_pct={params[3]}, momentum={params[4]}, weight_decay={params[5]}")
+    #     print(f"Best Accuracy: {result['best_accuracy']:.2f}%")
+    #     print("-" * 80)
 
-    # Plot results
-    import matplotlib.pyplot as plt
+    # # Plot results
+    # import matplotlib.pyplot as plt
 
-    plt.figure(figsize=(12, 6))
-    accuracies = [r['best_accuracy'] for r in results]
-    param_labels = [f"Combo {i+1}" for i in range(len(results))]
+    # plt.figure(figsize=(12, 6))
+    # accuracies = [r['best_accuracy'] for r in results]
+    # param_labels = [f"Combo {i+1}" for i in range(len(results))]
     
-    plt.bar(param_labels, accuracies)
-    plt.title('Best Test Accuracy for Different Parameter Combinations')
-    plt.xlabel('Parameter Combinations')
-    plt.ylabel('Best Test Accuracy (%)')
-    plt.ylim(min(accuracies) - 1, max(accuracies) + 1)
+    # plt.bar(param_labels, accuracies)
+    # plt.title('Best Test Accuracy for Different Parameter Combinations')
+    # plt.xlabel('Parameter Combinations')
+    # plt.ylabel('Best Test Accuracy (%)')
+    # plt.ylim(min(accuracies) - 1, max(accuracies) + 1)
     
-    # Add value labels on top of each bar
-    for i, v in enumerate(accuracies):
-        plt.text(i, v + 0.1, f'{v:.2f}%', ha='center')
+    # # Add value labels on top of each bar
+    # for i, v in enumerate(accuracies):
+    #     plt.text(i, v + 0.1, f'{v:.2f}%', ha='center')
     
-    plt.tight_layout()
-    plt.show()
+    # plt.tight_layout()
+    # plt.show()
 
     # Final Results:
     # --------------------------------------------------------------------------------
@@ -591,4 +591,238 @@ if __name__ == '__main__':
     # Best Accuracy: 99.22%
     # --------------------------------------------------------------------------------
 
+    # Define parameter combinations to test
+    param_combinations = [
+        # max_lr, epochs, swa_start, momentum, weight_decay, swa_lr
+        # (0.4, 15, 5, 0.9, 1e-4, 0.001),  # Base configuration
+        # (0.3, 15, 7, 0.9, 1e-4, 0.001),  # Later SWA start
+        # (0.5, 15, 3, 0.9, 1e-4, 0.001),  # Earlier SWA start
+        # (0.4, 15, 5, 0.95, 1e-4, 0.0005), # Higher momentum, lower SWA lr
+        # (0.3, 20, 8, 0.9, 5e-5, 0.001),  # More epochs, lower weight decay
+        # (0.4, 12, 4, 0.85, 1e-4, 0.002),  # Fewer epochs, higher SWA lr
+        # (0.2, 15, 5, 0.9, 1e-4, 0.0005),  # Lower max_lr
+        # (0.15, 20, 8, 0.92, 8e-5, 0.0003), # Even lower max_lr, more epochs
+        # (0.1, 20, 10, 0.95, 5e-5, 0.0002), # Very low max_lr, longest training
+        # (0.08, 20, 7, 0.9, 1e-4, 0.0001)   # Lowest max_lr configuration
+        (0.4, 15, 5, 0.9, 1e-4, 0.001),    # Best performing: 99.41% regular, 99.36% SWA -
+        # (0.4, 13, 5, 0.9, 1e-4, 0.001),    # Best performing: 
+        # (0.4, 11, 5, 0.9, 1e-4, 0.001),    # Best performing: 
+        # (0.4, 18, 5, 0.9, 1e-4, 0.001),    # Best performing: more epochs
+        # (0.4, 15, 4, 0.9, 1e-4, 0.001),    # Try slightly earlier SWA start
+        # (0.4, 15, 6, 0.9, 1e-4, 0.001),    # Try slightly later SWA start
+        # (0.4, 17, 5, 0.9, 1e-4, 0.001),    # Try few more epochs
+        # (0.4, 15, 5, 0.9, 8e-5, 0.001),    # Try slightly lower weight decay
+        # (0.4, 15, 5, 0.92, 1e-4, 0.001),   # Try slightly higher momentum
+        # (0.35, 15, 5, 0.9, 1e-4, 0.001),   # Try slightly lower max_lr
+        # (0.45, 15, 5, 0.9, 1e-4, 0.001),   # Try slightly higher max_lr
+        (0.4, 15, 5, 0.9, 1e-4, 0.0008),   # Try slightly lower swa_lr -
+        # (0.4, 15, 5, 0.9, 1e-4, 0.0012)    # Try slightly higher swa_lr
+    ]
+
+    # Store results for comparison
+    results = []
+
+    for params in param_combinations:
+        max_lr, num_epochs, swa_start, momentum, weight_decay, swa_lr = params
+        print(f"\nTraining with parameters:")
+        print(f"max_lr: {max_lr}, epochs: {num_epochs}, swa_start: {swa_start}")
+        print(f"momentum: {momentum}, weight_decay: {weight_decay}, swa_lr: {swa_lr}")
+
+        # Initialize model and move to device
+        model = Net().to(device)
+        swa_model = AveragedModel(model)
+
+        # Configure optimizer
+        optimizer = optim.SGD(model.parameters(), lr=max_lr/10, momentum=momentum, weight_decay=weight_decay)
+
+        # OneCycleLR scheduler
+        scheduler = torch.optim.lr_scheduler.OneCycleLR(
+            optimizer,
+            max_lr=max_lr,
+            epochs=num_epochs,
+            steps_per_epoch=len(train_loader),
+            pct_start=0.3,
+            div_factor=10,
+            final_div_factor=100
+        )
+
+        swa_scheduler = SWALR(optimizer, swa_lr=swa_lr)
+
+        # Track best accuracy for this combination
+        best_accuracy = 0.0
+        best_swa_accuracy = 0.0
+
+        for epoch in range(1, num_epochs + 1):
+            current_lr = optimizer.param_groups[0]['lr']
+            print(f'Epoch {epoch}: Current learning rate: {current_lr:.6f}')
+            
+            if epoch < swa_start:
+                train(model, device, train_loader, optimizer, epoch, scheduler)
+            else:
+                train(model, device, train_loader, optimizer, epoch)
+                swa_model.update_parameters(model)
+                swa_scheduler.step()
+            
+            # Test regular model
+            model.eval()
+            correct = 0
+            with torch.no_grad():
+                for data, target in test_loader:
+                    data, target = data.to(device), target.to(device)
+                    output = model(data)
+                    pred = output.argmax(dim=1, keepdim=True)
+                    correct += pred.eq(target.view_as(pred)).sum().item()
+            
+            accuracy = 100. * correct / len(test_loader.dataset)
+            best_accuracy = max(best_accuracy, accuracy)
+            print(f'Regular Model Test Accuracy: {accuracy:.2f}%')
+            
+            # Test SWA model if applicable
+            if epoch >= swa_start:
+                torch.optim.swa_utils.update_bn(train_loader, swa_model, device=device)
+                swa_model.eval()
+                correct = 0
+                with torch.no_grad():
+                    for data, target in test_loader:
+                        data, target = data.to(device), target.to(device)
+                        output = swa_model(data)
+                        pred = output.argmax(dim=1, keepdim=True)
+                        correct += pred.eq(target.view_as(pred)).sum().item()
+                
+                swa_accuracy = 100. * correct / len(test_loader.dataset)
+                best_swa_accuracy = max(best_swa_accuracy, swa_accuracy)
+                print(f'SWA Model Test Accuracy: {swa_accuracy:.2f}%')
+
+        # Store results
+        results.append({
+            'params': params,
+            'best_regular_accuracy': best_accuracy,
+            'best_swa_accuracy': best_swa_accuracy
+        })
+
+    # Print final results
+    print("\nFinal Results:")
+    print("-" * 80)
+    for result in results:
+        params = result['params']
+        print(f"Parameters: max_lr={params[0]}, epochs={params[1]}, swa_start={params[2]}, "
+              f"momentum={params[3]}, weight_decay={params[4]}, swa_lr={params[5]}")
+        print(f"Best Regular Accuracy: {result['best_regular_accuracy']:.2f}%")
+        print(f"Best SWA Accuracy: {result['best_swa_accuracy']:.2f}%")
+        print("-" * 80)
+
+    # Plot comparison
+    import matplotlib.pyplot as plt
+
+    plt.figure(figsize=(12, 6))
+    x = range(len(results))
+    regular_accuracies = [r['best_regular_accuracy'] for r in results]
+    swa_accuracies = [r['best_swa_accuracy'] for r in results]
+
+    plt.plot(x, regular_accuracies, 'b-', label='Regular Model')
+    plt.plot(x, swa_accuracies, 'r-', label='SWA Model')
+    plt.xlabel('Parameter Combination')
+    plt.ylabel('Best Accuracy (%)')
+    plt.title('Model Performance Comparison')
+    plt.legend()
+    plt.grid(True)
+    plt.xticks(x)
+    plt.show()
+    #Final Results:
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, epochs=15, swa_start=5, momentum=0.9, weight_decay=0.0001, swa_lr=0.001
+    # Best Regular Accuracy: 99.41%
+    # Best SWA Accuracy: 99.36%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.3, epochs=15, swa_start=7, momentum=0.9, weight_decay=0.0001, swa_lr=0.001
+    # Best Regular Accuracy: 99.29%
+    # Best SWA Accuracy: 99.23%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.5, epochs=15, swa_start=3, momentum=0.9, weight_decay=0.0001, swa_lr=0.001
+    # Best Regular Accuracy: 99.08%
+    # Best SWA Accuracy: 99.04%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, epochs=15, swa_start=5, momentum=0.95, weight_decay=0.0001, swa_lr=0.0005
+    # Best Regular Accuracy: 99.19%
+    # Best SWA Accuracy: 99.16%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.3, epochs=20, swa_start=8, momentum=0.9, weight_decay=5e-05, swa_lr=0.001
+    # Best Regular Accuracy: 99.14%
+    # Best SWA Accuracy: 99.16%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, epochs=12, swa_start=4, momentum=0.85, weight_decay=0.0001, swa_lr=0.002
+    # Best Regular Accuracy: 99.04%
+    # Best SWA Accuracy: 99.08%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.2, epochs=15, swa_start=5, momentum=0.9, weight_decay=0.0001, swa_lr=0.0005
+    # Best Regular Accuracy: 99.24%
+    # Best SWA Accuracy: 99.16%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.15, epochs=20, swa_start=8, momentum=0.92, weight_decay=8e-05, swa_lr=0.0003
+    # Best Regular Accuracy: 99.28%
+    # Best SWA Accuracy: 99.21%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.1, epochs=20, swa_start=10, momentum=0.95, weight_decay=5e-05, swa_lr=0.0002
+    # Best Regular Accuracy: 99.10%
+    # Best SWA Accuracy: 99.11%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.08, epochs=20, swa_start=7, momentum=0.9, weight_decay=0.0001, swa_lr=0.0001
+    # Best Regular Accuracy: 99.18%
+    # Best SWA Accuracy: 99.17%
+    # --------------------------------------------------------------------------------
+    
+    # 3rd round of experiments
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, epochs=15, swa_start=5, momentum=0.9, weight_decay=0.0001, swa_lr=0.001
+    # Best Regular Accuracy: 99.41%
+    # Best SWA Accuracy: 99.36%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, epochs=13, swa_start=5, momentum=0.9, weight_decay=0.0001, swa_lr=0.001
+    # Best Regular Accuracy: 99.17%
+    # Best SWA Accuracy: 99.13%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, epochs=11, swa_start=5, momentum=0.9, weight_decay=0.0001, swa_lr=0.001
+    # Best Regular Accuracy: 99.00%
+    # Best SWA Accuracy: 99.01%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, epochs=18, swa_start=5, momentum=0.9, weight_decay=0.0001, swa_lr=0.001
+    # Best Regular Accuracy: 99.18%
+    # Best SWA Accuracy: 99.08%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, epochs=15, swa_start=4, momentum=0.9, weight_decay=0.0001, swa_lr=0.001
+    # Best Regular Accuracy: 99.18%
+    # Best SWA Accuracy: 99.16%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, epochs=15, swa_start=6, momentum=0.9, weight_decay=0.0001, swa_lr=0.001
+    # Best Regular Accuracy: 99.26%
+    # Best SWA Accuracy: 99.24%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, epochs=17, swa_start=5, momentum=0.9, weight_decay=0.0001, swa_lr=0.001
+    # Best Regular Accuracy: 99.26%
+    # Best SWA Accuracy: 99.23%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, epochs=15, swa_start=5, momentum=0.9, weight_decay=8e-05, swa_lr=0.001
+    # Best Regular Accuracy: 99.04%
+    # Best SWA Accuracy: 99.05%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, epochs=15, swa_start=5, momentum=0.92, weight_decay=0.0001, swa_lr=0.001
+    # Best Regular Accuracy: 99.12%
+    # Best SWA Accuracy: 99.06%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.35, epochs=15, swa_start=5, momentum=0.9, weight_decay=0.0001, swa_lr=0.001
+    # Best Regular Accuracy: 99.20%
+    # Best SWA Accuracy: 99.06%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.45, epochs=15, swa_start=5, momentum=0.9, weight_decay=0.0001, swa_lr=0.001
+    # Best Regular Accuracy: 99.19%
+    # Best SWA Accuracy: 99.08%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, epochs=15, swa_start=5, momentum=0.9, weight_decay=0.0001, swa_lr=0.0008
+    # Best Regular Accuracy: 99.29%
+    # Best SWA Accuracy: 99.16%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, epochs=15, swa_start=5, momentum=0.9, weight_decay=0.0001, swa_lr=0.0012
+    # Best Regular Accuracy: 99.21%
+    # Best SWA Accuracy: 99.11%
+    # --------------------------------------------------------------------------------
 
