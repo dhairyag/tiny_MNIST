@@ -74,7 +74,7 @@ train_transforms = A.Compose([
     A.ShiftScaleRotate(
         #shift_limit=0.0625,
         #scale_limit=0.05,
-        rotate_limit=10,
+        rotate_limit=16,
         p=0.15,
         border_mode=cv2.BORDER_CONSTANT,
         value=0
@@ -972,19 +972,19 @@ if __name__ == '__main__':
     # Define parameter combinations for OneCycle
     param_combinations = [
         # max_lr, initial_div, final_div, warmup_pct, momentum, weight_decay
-        # (0.3, 20, 50, 0.3, 0.9, 1e-5),  # Best performing parameters - 99.33%
-        # (0.4, 25, 100, 0.5, 0.9, 1e-4), # Second best - 99.32%
-        # (0.3, 25, 100, 0.3, 0.9, 1e-4), # Baseline
-        # (0.2, 20, 50, 0.4, 0.95, 1e-5), # Lower learning rate
-        # (0.1, 10, 25, 0.2, 0.85, 5e-5), # Very low learning rate
+        (0.3, 20, 50, 0.3, 0.9, 1e-5),  # Best performing parameters - 99.33% -e20
+        #(0.4, 25, 100, 0.5, 0.9, 1e-4), # Second best - 99.32%
+        #(0.3, 25, 100, 0.3, 0.9, 1e-4), # Baseline
+        (0.2, 20, 50, 0.4, 0.95, 1e-5), # Lower learning rate -e20
+        #(0.1, 10, 25, 0.2, 0.85, 5e-5), # Very low learning rate
         # (0.4, 30, 200, 0.5, 0.9, 1e-4), # Higher divs
-        # (0.5, 50, 300, 0.1, 0.95, 1e-3), # Extreme values
-        (0.4, 30, 200, 0.5, 0.9, 1e-4),  # Best performing baseline - 99.38%
-        # (0.4, 25, 175, 0.5, 0.9, 1e-4),  # Slightly lower divs
+        #(0.5, 50, 300, 0.1, 0.95, 1e-3), # Extreme values
+        #(0.4, 30, 200, 0.5, 0.9, 1e-4),  # Best performing baseline - 99.38%
+        (0.4, 25, 175, 0.5, 0.9, 1e-4),  # Slightly lower divs -e20
         # (0.4, 35, 225, 0.5, 0.9, 1e-4),  # Slightly higher divs
         # (0.35, 30, 200, 0.5, 0.9, 1e-4), # Lower max_lr
-        # (0.45, 30, 200, 0.5, 0.9, 1e-4), # Higher max_lr
-        (0.4, 30, 200, 0.4, 0.9, 1e-4),  # Lower warmup
+        (0.45, 30, 200, 0.5, 0.9, 1e-4), # Higher max_lr -e20
+        # (0.4, 30, 200, 0.4, 0.9, 1e-4),  # Lower warmup
         # (0.4, 30, 200, 0.6, 0.9, 1e-4),  # Higher warmup
         # (0.4, 30, 200, 0.5, 0.85, 1e-4), # Lower momentum
         # (0.4, 30, 200, 0.5, 0.95, 1e-4), # Higher momentum
@@ -994,7 +994,7 @@ if __name__ == '__main__':
 
     # Store results
     results = []
-    num_epochs = 15
+    num_epochs = 20
 
     # Run training for each parameter combination
     for params in param_combinations:
@@ -1140,4 +1140,58 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------------
     # Parameters: max_lr=0.4, initial_div=30, final_div=200, warmup_pct=0.5, momentum=0.9, weight_decay=0.0002
     # Best Accuracy: 99.09%
+    # --------------------------------------------------------------------------------
+
+    # Final Results: with 20 epochs OneCycle and image rotation 16 p=0.15
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.3, initial_div=20, final_div=50, warmup_pct=0.3, momentum=0.9, weight_decay=1e-05
+    # Best Accuracy: 99.43%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, initial_div=25, final_div=100, warmup_pct=0.5, momentum=0.9, weight_decay=0.0001
+    # Best Accuracy: 99.23%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.3, initial_div=25, final_div=100, warmup_pct=0.3, momentum=0.9, weight_decay=0.0001
+    # Best Accuracy: 99.30%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.2, initial_div=20, final_div=50, warmup_pct=0.4, momentum=0.95, weight_decay=1e-05
+    # Best Accuracy: 99.38%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.1, initial_div=10, final_div=25, warmup_pct=0.2, momentum=0.85, weight_decay=5e-05
+    # Best Accuracy: 99.33%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.5, initial_div=50, final_div=300, warmup_pct=0.1, momentum=0.95, weight_decay=0.001
+    # Best Accuracy: 99.33%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, initial_div=30, final_div=200, warmup_pct=0.5, momentum=0.9, weight_decay=0.0001
+    # Best Accuracy: 99.26%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, initial_div=25, final_div=175, warmup_pct=0.5, momentum=0.9, weight_decay=0.0001
+    # Best Accuracy: 99.40%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, initial_div=35, final_div=225, warmup_pct=0.5, momentum=0.9, weight_decay=0.0001
+    # Best Accuracy: 99.24%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.35, initial_div=30, final_div=200, warmup_pct=0.5, momentum=0.9, weight_decay=0.0001
+    # Best Accuracy: 99.34%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.45, initial_div=30, final_div=200, warmup_pct=0.5, momentum=0.9, weight_decay=0.0001
+    # Best Accuracy: 99.38%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, initial_div=30, final_div=200, warmup_pct=0.4, momentum=0.9, weight_decay=0.0001
+    # Best Accuracy: 99.30%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, initial_div=30, final_div=200, warmup_pct=0.6, momentum=0.9, weight_decay=0.0001
+    # Best Accuracy: 99.31%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, initial_div=30, final_div=200, warmup_pct=0.5, momentum=0.85, weight_decay=0.0001
+    # Best Accuracy: 99.34%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, initial_div=30, final_div=200, warmup_pct=0.5, momentum=0.95, weight_decay=0.0001
+    # Best Accuracy: 99.33%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, initial_div=30, final_div=200, warmup_pct=0.5, momentum=0.9, weight_decay=5e-05
+    # Best Accuracy: 99.18%
+    # --------------------------------------------------------------------------------
+    # Parameters: max_lr=0.4, initial_div=30, final_div=200, warmup_pct=0.5, momentum=0.9, weight_decay=0.0002
+    # Best Accuracy: 99.24%
     # --------------------------------------------------------------------------------
