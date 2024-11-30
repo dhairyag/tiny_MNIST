@@ -72,9 +72,9 @@ import random
 # Define the augmentation pipeline
 train_transforms = A.Compose([
     # A.ShiftScaleRotate(
-    #     shift_limit=0.02,
-    #     scale_limit=0.05,
-    #     rotate_limit=10,
+    #     #shift_limit=0.0625,
+    #     #scale_limit=0.05,
+    #     rotate_limit=7,
     #     p=0.2,
     #     border_mode=cv2.BORDER_CONSTANT,
     #     value=0
@@ -591,143 +591,143 @@ if __name__ == '__main__':
     # Best Accuracy: 99.22%
     # --------------------------------------------------------------------------------
 
-    # Define parameter combinations to test
-    param_combinations = [
-        # max_lr, epochs, swa_start, momentum, weight_decay, swa_lr
-        # (0.4, 15, 5, 0.9, 1e-4, 0.001),  # Base configuration
-        # (0.3, 15, 7, 0.9, 1e-4, 0.001),  # Later SWA start
-        # (0.5, 15, 3, 0.9, 1e-4, 0.001),  # Earlier SWA start
-        # (0.4, 15, 5, 0.95, 1e-4, 0.0005), # Higher momentum, lower SWA lr
-        # (0.3, 20, 8, 0.9, 5e-5, 0.001),  # More epochs, lower weight decay
-        # (0.4, 12, 4, 0.85, 1e-4, 0.002),  # Fewer epochs, higher SWA lr
-        # (0.2, 15, 5, 0.9, 1e-4, 0.0005),  # Lower max_lr
-        # (0.15, 20, 8, 0.92, 8e-5, 0.0003), # Even lower max_lr, more epochs
-        # (0.1, 20, 10, 0.95, 5e-5, 0.0002), # Very low max_lr, longest training
-        # (0.08, 20, 7, 0.9, 1e-4, 0.0001)   # Lowest max_lr configuration
-        (0.4, 15, 5, 0.9, 1e-4, 0.001),    # Best performing: 99.41% regular, 99.36% SWA -
-        # (0.4, 13, 5, 0.9, 1e-4, 0.001),    # Best performing: 
-        # (0.4, 11, 5, 0.9, 1e-4, 0.001),    # Best performing: 
-        # (0.4, 18, 5, 0.9, 1e-4, 0.001),    # Best performing: more epochs
-        # (0.4, 15, 4, 0.9, 1e-4, 0.001),    # Try slightly earlier SWA start
-        # (0.4, 15, 6, 0.9, 1e-4, 0.001),    # Try slightly later SWA start
-        # (0.4, 17, 5, 0.9, 1e-4, 0.001),    # Try few more epochs
-        # (0.4, 15, 5, 0.9, 8e-5, 0.001),    # Try slightly lower weight decay
-        # (0.4, 15, 5, 0.92, 1e-4, 0.001),   # Try slightly higher momentum
-        # (0.35, 15, 5, 0.9, 1e-4, 0.001),   # Try slightly lower max_lr
-        # (0.45, 15, 5, 0.9, 1e-4, 0.001),   # Try slightly higher max_lr
-        (0.4, 15, 5, 0.9, 1e-4, 0.0008),   # Try slightly lower swa_lr -
-        # (0.4, 15, 5, 0.9, 1e-4, 0.0012)    # Try slightly higher swa_lr
-    ]
+    # # Define parameter combinations to test
+    # param_combinations = [
+    #     # max_lr, epochs, swa_start, momentum, weight_decay, swa_lr
+    #     # (0.4, 15, 5, 0.9, 1e-4, 0.001),  # Base configuration
+    #     # (0.3, 15, 7, 0.9, 1e-4, 0.001),  # Later SWA start
+    #     # (0.5, 15, 3, 0.9, 1e-4, 0.001),  # Earlier SWA start
+    #     # (0.4, 15, 5, 0.95, 1e-4, 0.0005), # Higher momentum, lower SWA lr
+    #     # (0.3, 20, 8, 0.9, 5e-5, 0.001),  # More epochs, lower weight decay
+    #     # (0.4, 12, 4, 0.85, 1e-4, 0.002),  # Fewer epochs, higher SWA lr
+    #     # (0.2, 15, 5, 0.9, 1e-4, 0.0005),  # Lower max_lr
+    #     # (0.15, 20, 8, 0.92, 8e-5, 0.0003), # Even lower max_lr, more epochs
+    #     # (0.1, 20, 10, 0.95, 5e-5, 0.0002), # Very low max_lr, longest training
+    #     # (0.08, 20, 7, 0.9, 1e-4, 0.0001)   # Lowest max_lr configuration
+    #     (0.4, 15, 5, 0.9, 1e-4, 0.001),    # Best performing: 99.41% regular, 99.36% SWA -
+    #     # (0.4, 13, 5, 0.9, 1e-4, 0.001),    # Best performing: 
+    #     # (0.4, 11, 5, 0.9, 1e-4, 0.001),    # Best performing: 
+    #     # (0.4, 18, 5, 0.9, 1e-4, 0.001),    # Best performing: more epochs
+    #     # (0.4, 15, 4, 0.9, 1e-4, 0.001),    # Try slightly earlier SWA start
+    #     # (0.4, 15, 6, 0.9, 1e-4, 0.001),    # Try slightly later SWA start
+    #     # (0.4, 17, 5, 0.9, 1e-4, 0.001),    # Try few more epochs
+    #     # (0.4, 15, 5, 0.9, 8e-5, 0.001),    # Try slightly lower weight decay
+    #     # (0.4, 15, 5, 0.92, 1e-4, 0.001),   # Try slightly higher momentum
+    #     # (0.35, 15, 5, 0.9, 1e-4, 0.001),   # Try slightly lower max_lr
+    #     # (0.45, 15, 5, 0.9, 1e-4, 0.001),   # Try slightly higher max_lr
+    #     (0.4, 15, 5, 0.9, 1e-4, 0.0008),   # Try slightly lower swa_lr -
+    #     # (0.4, 15, 5, 0.9, 1e-4, 0.0012)    # Try slightly higher swa_lr
+    # ]
 
-    # Store results for comparison
-    results = []
+    # # Store results for comparison
+    # results = []
 
-    for params in param_combinations:
-        max_lr, num_epochs, swa_start, momentum, weight_decay, swa_lr = params
-        print(f"\nTraining with parameters:")
-        print(f"max_lr: {max_lr}, epochs: {num_epochs}, swa_start: {swa_start}")
-        print(f"momentum: {momentum}, weight_decay: {weight_decay}, swa_lr: {swa_lr}")
+    # for params in param_combinations:
+    #     max_lr, num_epochs, swa_start, momentum, weight_decay, swa_lr = params
+    #     print(f"\nTraining with parameters:")
+    #     print(f"max_lr: {max_lr}, epochs: {num_epochs}, swa_start: {swa_start}")
+    #     print(f"momentum: {momentum}, weight_decay: {weight_decay}, swa_lr: {swa_lr}")
 
-        # Initialize model and move to device
-        model = Net().to(device)
-        swa_model = AveragedModel(model)
+    #     # Initialize model and move to device
+    #     model = Net().to(device)
+    #     swa_model = AveragedModel(model)
 
-        # Configure optimizer
-        optimizer = optim.SGD(model.parameters(), lr=max_lr/10, momentum=momentum, weight_decay=weight_decay)
+    #     # Configure optimizer
+    #     optimizer = optim.SGD(model.parameters(), lr=max_lr/10, momentum=momentum, weight_decay=weight_decay)
 
-        # OneCycleLR scheduler
-        scheduler = torch.optim.lr_scheduler.OneCycleLR(
-            optimizer,
-            max_lr=max_lr,
-            epochs=num_epochs,
-            steps_per_epoch=len(train_loader),
-            pct_start=0.3,
-            div_factor=10,
-            final_div_factor=100
-        )
+    #     # OneCycleLR scheduler
+    #     scheduler = torch.optim.lr_scheduler.OneCycleLR(
+    #         optimizer,
+    #         max_lr=max_lr,
+    #         epochs=num_epochs,
+    #         steps_per_epoch=len(train_loader),
+    #         pct_start=0.3,
+    #         div_factor=10,
+    #         final_div_factor=100
+    #     )
 
-        swa_scheduler = SWALR(optimizer, swa_lr=swa_lr)
+    #     swa_scheduler = SWALR(optimizer, swa_lr=swa_lr)
 
-        # Track best accuracy for this combination
-        best_accuracy = 0.0
-        best_swa_accuracy = 0.0
+    #     # Track best accuracy for this combination
+    #     best_accuracy = 0.0
+    #     best_swa_accuracy = 0.0
 
-        for epoch in range(1, num_epochs + 1):
-            current_lr = optimizer.param_groups[0]['lr']
-            print(f'Epoch {epoch}: Current learning rate: {current_lr:.6f}')
+    #     for epoch in range(1, num_epochs + 1):
+    #         current_lr = optimizer.param_groups[0]['lr']
+    #         print(f'Epoch {epoch}: Current learning rate: {current_lr:.6f}')
             
-            if epoch < swa_start:
-                train(model, device, train_loader, optimizer, epoch, scheduler)
-            else:
-                train(model, device, train_loader, optimizer, epoch)
-                swa_model.update_parameters(model)
-                swa_scheduler.step()
+    #         if epoch < swa_start:
+    #             train(model, device, train_loader, optimizer, epoch, scheduler)
+    #         else:
+    #             train(model, device, train_loader, optimizer, epoch)
+    #             swa_model.update_parameters(model)
+    #             swa_scheduler.step()
             
-            # Test regular model
-            model.eval()
-            correct = 0
-            with torch.no_grad():
-                for data, target in test_loader:
-                    data, target = data.to(device), target.to(device)
-                    output = model(data)
-                    pred = output.argmax(dim=1, keepdim=True)
-                    correct += pred.eq(target.view_as(pred)).sum().item()
+    #         # Test regular model
+    #         model.eval()
+    #         correct = 0
+    #         with torch.no_grad():
+    #             for data, target in test_loader:
+    #                 data, target = data.to(device), target.to(device)
+    #                 output = model(data)
+    #                 pred = output.argmax(dim=1, keepdim=True)
+    #                 correct += pred.eq(target.view_as(pred)).sum().item()
             
-            accuracy = 100. * correct / len(test_loader.dataset)
-            best_accuracy = max(best_accuracy, accuracy)
-            print(f'Regular Model Test Accuracy: {accuracy:.2f}%')
+    #         accuracy = 100. * correct / len(test_loader.dataset)
+    #         best_accuracy = max(best_accuracy, accuracy)
+    #         print(f'Regular Model Test Accuracy: {accuracy:.2f}%')
             
-            # Test SWA model if applicable
-            if epoch >= swa_start:
-                torch.optim.swa_utils.update_bn(train_loader, swa_model, device=device)
-                swa_model.eval()
-                correct = 0
-                with torch.no_grad():
-                    for data, target in test_loader:
-                        data, target = data.to(device), target.to(device)
-                        output = swa_model(data)
-                        pred = output.argmax(dim=1, keepdim=True)
-                        correct += pred.eq(target.view_as(pred)).sum().item()
+    #         # Test SWA model if applicable
+    #         if epoch >= swa_start:
+    #             torch.optim.swa_utils.update_bn(train_loader, swa_model, device=device)
+    #             swa_model.eval()
+    #             correct = 0
+    #             with torch.no_grad():
+    #                 for data, target in test_loader:
+    #                     data, target = data.to(device), target.to(device)
+    #                     output = swa_model(data)
+    #                     pred = output.argmax(dim=1, keepdim=True)
+    #                     correct += pred.eq(target.view_as(pred)).sum().item()
                 
-                swa_accuracy = 100. * correct / len(test_loader.dataset)
-                best_swa_accuracy = max(best_swa_accuracy, swa_accuracy)
-                print(f'SWA Model Test Accuracy: {swa_accuracy:.2f}%')
+    #             swa_accuracy = 100. * correct / len(test_loader.dataset)
+    #             best_swa_accuracy = max(best_swa_accuracy, swa_accuracy)
+    #             print(f'SWA Model Test Accuracy: {swa_accuracy:.2f}%')
 
-        # Store results
-        results.append({
-            'params': params,
-            'best_regular_accuracy': best_accuracy,
-            'best_swa_accuracy': best_swa_accuracy
-        })
+    #     # Store results
+    #     results.append({
+    #         'params': params,
+    #         'best_regular_accuracy': best_accuracy,
+    #         'best_swa_accuracy': best_swa_accuracy
+    #     })
 
-    # Print final results
-    print("\nFinal Results:")
-    print("-" * 80)
-    for result in results:
-        params = result['params']
-        print(f"Parameters: max_lr={params[0]}, epochs={params[1]}, swa_start={params[2]}, "
-              f"momentum={params[3]}, weight_decay={params[4]}, swa_lr={params[5]}")
-        print(f"Best Regular Accuracy: {result['best_regular_accuracy']:.2f}%")
-        print(f"Best SWA Accuracy: {result['best_swa_accuracy']:.2f}%")
-        print("-" * 80)
+    # # Print final results
+    # print("\nFinal Results:")
+    # print("-" * 80)
+    # for result in results:
+    #     params = result['params']
+    #     print(f"Parameters: max_lr={params[0]}, epochs={params[1]}, swa_start={params[2]}, "
+    #           f"momentum={params[3]}, weight_decay={params[4]}, swa_lr={params[5]}")
+    #     print(f"Best Regular Accuracy: {result['best_regular_accuracy']:.2f}%")
+    #     print(f"Best SWA Accuracy: {result['best_swa_accuracy']:.2f}%")
+    #     print("-" * 80)
 
-    # Plot comparison
-    import matplotlib.pyplot as plt
+    # # Plot comparison
+    # import matplotlib.pyplot as plt
 
-    plt.figure(figsize=(12, 6))
-    x = range(len(results))
-    regular_accuracies = [r['best_regular_accuracy'] for r in results]
-    swa_accuracies = [r['best_swa_accuracy'] for r in results]
+    # plt.figure(figsize=(12, 6))
+    # x = range(len(results))
+    # regular_accuracies = [r['best_regular_accuracy'] for r in results]
+    # swa_accuracies = [r['best_swa_accuracy'] for r in results]
 
-    plt.plot(x, regular_accuracies, 'b-', label='Regular Model')
-    plt.plot(x, swa_accuracies, 'r-', label='SWA Model')
-    plt.xlabel('Parameter Combination')
-    plt.ylabel('Best Accuracy (%)')
-    plt.title('Model Performance Comparison')
-    plt.legend()
-    plt.grid(True)
-    plt.xticks(x)
-    plt.show()
+    # plt.plot(x, regular_accuracies, 'b-', label='Regular Model')
+    # plt.plot(x, swa_accuracies, 'r-', label='SWA Model')
+    # plt.xlabel('Parameter Combination')
+    # plt.ylabel('Best Accuracy (%)')
+    # plt.title('Model Performance Comparison')
+    # plt.legend()
+    # plt.grid(True)
+    # plt.xticks(x)
+    # plt.show()
     #Final Results:
     # --------------------------------------------------------------------------------
     # Parameters: max_lr=0.4, epochs=15, swa_start=5, momentum=0.9, weight_decay=0.0001, swa_lr=0.001
@@ -826,3 +826,250 @@ if __name__ == '__main__':
     # Best SWA Accuracy: 99.11%
     # --------------------------------------------------------------------------------
 
+    # # Tunable parameters for Adam
+    # learning_rate = 0.001  # Initial learning rate
+    # beta1 = 0.9           # First momentum coefficient
+    # beta2 = 0.999         # Second momentum coefficient
+    # eps = 1e-8            # Small constant for numerical stability
+    # weight_decay = 1e-4   # L2 regularization
+    # num_epochs = 15       # Total number of epochs
+
+    # # Define parameter combinations for Adam
+    # param_combinations = [
+    #     # lr, beta1, beta2, eps, weight_decay
+    #     (0.001, 0.9, 0.999, 1e-8, 1e-4),  # Default Adam parameters
+    #     (0.003, 0.9, 0.999, 1e-8, 1e-4),  # Higher learning rate
+    #     (0.0003, 0.9, 0.999, 1e-8, 1e-4), # Lower learning rate
+    #     (0.001, 0.95, 0.999, 1e-8, 1e-4), # Higher beta1
+    #     (0.001, 0.9, 0.9995, 1e-8, 1e-4), # Higher beta2
+    #     (0.001, 0.9, 0.999, 1e-8, 1e-5),  # Lower weight decay
+    #     (0.005, 0.9, 0.999, 1e-8, 1e-4),  # Even higher learning rate
+    #     (0.008, 0.9, 0.999, 1e-8, 1e-4),  # Much higher learning rate
+    #     (0.01, 0.9, 0.999, 1e-8, 1e-4),   # Highest learning rate
+    # ]
+
+    # # Store results
+    # results = []
+    # num_epochs = 15
+
+    # # Run training for each parameter combination
+    # for params in param_combinations:
+    #     lr, beta1, beta2, eps, weight_decay = params
+    #     print(f"\nTraining with parameters:")
+    #     print(f"learning_rate: {lr}, beta1: {beta1}, beta2: {beta2}")
+    #     print(f"eps: {eps}, weight_decay: {weight_decay}")
+
+    #     # Initialize model
+    #     model = Net().to(device)
+        
+    #     # Adam Optimizer
+    #     optimizer = optim.Adam(
+    #         model.parameters(),
+    #         lr=lr,
+    #         betas=(beta1, beta2),
+    #         eps=eps,
+    #         weight_decay=weight_decay
+    #     )
+
+    #     # Track best accuracy for this combination
+    #     best_accuracy = 0.0
+
+    #     # Training Loop
+    #     for epoch in range(1, num_epochs + 1):
+    #         print(f'Epoch {epoch}')
+            
+    #         train(model, device, train_loader, optimizer, epoch)
+            
+    #         # Modified test function to return accuracy
+    #         model.eval()
+    #         correct = 0
+    #         with torch.no_grad():
+    #             for data, target in test_loader:
+    #                 data, target = data.to(device), target.to(device)
+    #                 output = model(data)
+    #                 pred = output.argmax(dim=1, keepdim=True)
+    #                 correct += pred.eq(target.view_as(pred)).sum().item()
+            
+    #         accuracy = 100. * correct / len(test_loader.dataset)
+    #         print(f'\nTest Accuracy: {accuracy:.2f}%\n')
+            
+    #         best_accuracy = max(best_accuracy, accuracy)
+
+    #     # Store results for this combination
+    #     results.append({
+    #         'params': params,
+    #         'best_accuracy': best_accuracy
+    #     })
+
+    # # Print and plot final results
+    # print("\nFinal Results:")
+    # print("-" * 80)
+    # for result in results:
+    #     params = result['params']
+    #     print(f"Parameters: lr={params[0]}, beta1={params[1]}, beta2={params[2]}, "
+    #           f"eps={params[3]}, weight_decay={params[4]}")
+    #     print(f"Best Accuracy: {result['best_accuracy']:.2f}%")
+    #     print("-" * 80)
+
+    # # Plot results
+    # import matplotlib.pyplot as plt
+
+    # plt.figure(figsize=(12, 6))
+    # accuracies = [r['best_accuracy'] for r in results]
+    # param_labels = [f"Combo {i+1}" for i in range(len(results))]
+    
+    # plt.bar(param_labels, accuracies)
+    # plt.title('Best Test Accuracy for Different Adam Parameter Combinations')
+    # plt.xlabel('Parameter Combinations')
+    # plt.ylabel('Best Test Accuracy (%)')
+    # plt.ylim(min(accuracies) - 1, max(accuracies) + 1)
+    
+    # # Add value labels on top of each bar
+    # for i, v in enumerate(accuracies):
+    #     plt.text(i, v + 0.1, f'{v:.2f}%', ha='center')
+    
+    # plt.tight_layout()
+    # plt.show()
+    #     Final Results: with 15 epochs Adam
+    # --------------------------------------------------------------------------------
+    # Parameters: lr=0.001, beta1=0.9, beta2=0.999, eps=1e-08, weight_decay=0.0001
+    # Best Accuracy: 98.88%
+    # --------------------------------------------------------------------------------
+    # Parameters: lr=0.003, beta1=0.9, beta2=0.999, eps=1e-08, weight_decay=0.0001
+    # Best Accuracy: 99.06%
+    # --------------------------------------------------------------------------------
+    # Parameters: lr=0.0003, beta1=0.9, beta2=0.999, eps=1e-08, weight_decay=0.0001
+    # Best Accuracy: 97.97%
+    # --------------------------------------------------------------------------------
+    # Parameters: lr=0.001, beta1=0.95, beta2=0.999, eps=1e-08, weight_decay=0.0001
+    # Best Accuracy: 98.74%
+    # --------------------------------------------------------------------------------
+    # Parameters: lr=0.001, beta1=0.9, beta2=0.9995, eps=1e-08, weight_decay=0.0001
+    # Best Accuracy: 98.84%
+    # --------------------------------------------------------------------------------
+    # Parameters: lr=0.001, beta1=0.9, beta2=0.999, eps=1e-08, weight_decay=1e-05
+    # Best Accuracy: 99.12%
+    # --------------------------------------------------------------------------------
+    # Parameters: lr=0.005, beta1=0.9, beta2=0.999, eps=1e-08, weight_decay=0.0001
+    # Best Accuracy: 99.05%
+    # --------------------------------------------------------------------------------
+    # Parameters: lr=0.008, beta1=0.9, beta2=0.999, eps=1e-08, weight_decay=0.0001
+    # Best Accuracy: 99.01%
+    # --------------------------------------------------------------------------------
+    # Parameters: lr=0.01, beta1=0.9, beta2=0.999, eps=1e-08, weight_decay=0.0001
+    # Best Accuracy: 99.01%
+    # --------------------------------------------------------------------------------
+
+       # Tunable parameters for OneCycle policy
+    max_lr = 0.4          # Peak learning rate
+    initial_div = 20      # Divisor for initial learning rate (max_lr / initial_div)
+    final_div = 50        # Divisor for final learning rate
+    warmup_pct = 0.3      # Percentage of training for warmup
+    momentum = 0.9        # Momentum for SGD
+    weight_decay = 1e-5   # L2 regularization
+    num_epochs = 15       # Total number of epochs
+
+    # Define parameter combinations for OneCycle
+    param_combinations = [
+        # max_lr, initial_div, final_div, warmup_pct, momentum, weight_decay
+        (0.3, 20, 50, 0.3, 0.9, 1e-5),  # Best performing parameters - 99.33%
+        (0.4, 25, 100, 0.5, 0.9, 1e-4), # Second best - 99.32%
+        (0.3, 25, 100, 0.3, 0.9, 1e-4), # Baseline
+        (0.2, 20, 50, 0.4, 0.95, 1e-5), # Lower learning rate
+        (0.1, 10, 25, 0.2, 0.85, 5e-5), # Very low learning rate
+        (0.4, 30, 200, 0.5, 0.9, 1e-4), # Higher divs
+        (0.5, 50, 300, 0.1, 0.95, 1e-3), # Extreme values
+    ]
+
+    # Store results
+    results = []
+    num_epochs = 15
+
+    # Run training for each parameter combination
+    for params in param_combinations:
+        max_lr, initial_div, final_div, warmup_pct, momentum, weight_decay = params
+        print(f"\nTraining with parameters:")
+        print(f"max_lr: {max_lr}, initial_div: {initial_div}, final_div: {final_div}")
+        print(f"warmup_pct: {warmup_pct}, momentum: {momentum}, weight_decay: {weight_decay}")
+
+        # Initialize model
+        model = Net().to(device)
+        
+        # SGD Optimizer with OneCycle policy
+        optimizer = optim.SGD(
+            model.parameters(),
+            lr=max_lr/initial_div,  # Initial learning rate
+            momentum=momentum,
+            weight_decay=weight_decay
+        )
+
+        # OneCycle scheduler
+        scheduler = torch.optim.lr_scheduler.OneCycleLR(
+            optimizer,
+            max_lr=max_lr,
+            epochs=num_epochs,
+            steps_per_epoch=len(train_loader),
+            pct_start=warmup_pct,
+            div_factor=initial_div,
+            final_div_factor=final_div/initial_div
+        )
+
+        # Track best accuracy for this combination
+        best_accuracy = 0.0
+
+        # Training Loop
+        for epoch in range(1, num_epochs + 1):
+            print(f'Epoch {epoch}')
+            
+            train(model, device, train_loader, optimizer, epoch, scheduler)
+            
+            # Modified test function to return accuracy
+            model.eval()
+            correct = 0
+            with torch.no_grad():
+                for data, target in test_loader:
+                    data, target = data.to(device), target.to(device)
+                    output = model(data)
+                    pred = output.argmax(dim=1, keepdim=True)
+                    correct += pred.eq(target.view_as(pred)).sum().item()
+            
+            accuracy = 100. * correct / len(test_loader.dataset)
+            print(f'\nTest Accuracy: {accuracy:.2f}%\n')
+            
+            best_accuracy = max(best_accuracy, accuracy)
+
+        # Store results for this combination
+        results.append({
+            'params': params,
+            'best_accuracy': best_accuracy
+        })
+
+    # Print and plot final results
+    print("\nFinal Results:")
+    print("-" * 80)
+    for result in results:
+        params = result['params']
+        print(f"Parameters: max_lr={params[0]}, initial_div={params[1]}, final_div={params[2]}, "
+              f"warmup_pct={params[3]}, momentum={params[4]}, weight_decay={params[5]}")
+        print(f"Best Accuracy: {result['best_accuracy']:.2f}%")
+        print("-" * 80)
+
+    # Plot results
+    import matplotlib.pyplot as plt
+
+    plt.figure(figsize=(12, 6))
+    accuracies = [r['best_accuracy'] for r in results]
+    param_labels = [f"Combo {i+1}" for i in range(len(results))]
+    
+    plt.bar(param_labels, accuracies)
+    plt.title('Best Test Accuracy for Different OneCycle Parameter Combinations')
+    plt.xlabel('Parameter Combinations')
+    plt.ylabel('Best Test Accuracy (%)')
+    plt.ylim(min(accuracies) - 1, max(accuracies) + 1)
+    
+    # Add value labels on top of each bar
+    for i, v in enumerate(accuracies):
+        plt.text(i, v + 0.1, f'{v:.2f}%', ha='center')
+    
+    plt.tight_layout()
+    plt.show()
