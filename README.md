@@ -1,5 +1,7 @@
 # MNIST Classification with PyTorch
 
+[![Model Architecture Checks](https://github.com/dhairyag/tiny_MNIST/actions/workflows/model_checks.yml/badge.svg)](https://github.com/dhairyag/tiny_MNIST/actions/workflows/model_checks.yml)
+
 This repository implements a CNN-based deep learning model for MNIST digit classification with automated architecture validation through GitHub Actions.
 
 `main_mnist.py` uses only **3,130 parameters** to achieve more than **99.4%** accuracy, observed in multiple runs. 
