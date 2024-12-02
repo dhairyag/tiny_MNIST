@@ -3,11 +3,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torchvision import datasets, transforms
-import math
+from torchvision import datasets
 import numpy as np
 import cv2
-import random
 from tqdm import tqdm
 from torchinfo import summary
 import albumentations as A
