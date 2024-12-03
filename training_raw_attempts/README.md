@@ -60,6 +60,22 @@ Collection of different model architectures tested:
 - 3,451 parameters
 - Best accuracy: 99.12%
 
+#### Accuracy Variations 
+The following figures show the accuracy variations for different models and parameter combinations.
+The figures are generated during raw testing of different models, augmentations and optimizers. These
+plots are not properly labeled for each set but provide a good idea about the **accuracy variations** and 
+**difficulty in achieving high accuracy of 99.4%+**. 
+
+The variations were obtained by carefully selecting parameter combinations for different 
+optimizers, models and augmentations.
+
+![fig1](./accuracy_figs/Figure_1.png)
+![fig2](./accuracy_figs/Figure_2.png)
+![fig3](./accuracy_figs/Figure_3.png)
+![fig4](./accuracy_figs/Figure_4.png)
+![fig7](./accuracy_figs/Figure_7.png)
+![fig8](./accuracy_figs/Figure_8_epoch20.png)
+
 ### optimization-methods-summary.ipynb
 Experiments with different optimization strategies:
 
