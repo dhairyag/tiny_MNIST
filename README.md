@@ -6,7 +6,12 @@ This repository implements a CNN-based deep learning model for MNIST digit class
 
 `main_mnist.py` uses only **3,130 parameters** to achieve more than **99.4%** accuracy, observed in multiple runs. 
 
-### Log Screenshots
+### Execution and Log Screenshots
+The main file is self contained and can be executed by running 
+```bash
+python main_mnist.py
+```
+
 Screenshots from two representative runs are shown where the model achieves `>99.4%` accuracy.
 
 #### Run 1 (link to text log file [here](./logs_n_images/log_9945.md))
