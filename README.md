@@ -26,6 +26,44 @@ The implementation (`main_mnist.py`) features a custom CNN architecture with the
 - **Total Parameters**: 3,130
 - **Output**: 10 classes (digits 0-9)
 
+```bash
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+Net                                      [1, 10]                   --
+├─Sequential: 1-1                        [1, 6, 14, 14]            --
+│    └─Conv2d: 2-1                       [1, 6, 28, 28]            60
+│    └─BatchNorm2d: 2-2                  [1, 6, 28, 28]            12
+│    └─ReLU: 2-3                         [1, 6, 28, 28]            --
+│    └─Conv2d: 2-4                       [1, 6, 28, 28]            330
+│    └─BatchNorm2d: 2-5                  [1, 6, 28, 28]            12
+│    └─ReLU: 2-6                         [1, 6, 28, 28]            --
+│    └─MaxPool2d: 2-7                    [1, 6, 14, 14]            --
+│    └─Dropout: 2-8                      [1, 6, 14, 14]            --
+├─Sequential: 1-2                        [1, 8, 7, 7]              --
+│    └─Conv2d: 2-9                       [1, 8, 14, 14]            440
+│    └─BatchNorm2d: 2-10                 [1, 8, 14, 14]            16
+│    └─ReLU: 2-11                        [1, 8, 14, 14]            --
+│    └─Conv2d: 2-12                      [1, 8, 14, 14]            584
+│    └─BatchNorm2d: 2-13                 [1, 8, 14, 14]            16
+│    └─ReLU: 2-14                        [1, 8, 14, 14]            --
+│    └─MaxPool2d: 2-15                   [1, 8, 7, 7]              --
+│    └─Dropout: 2-16                     [1, 8, 7, 7]              --
+├─Sequential: 1-3                        [1, 10, 3, 3]             --
+│    └─Conv2d: 2-17                      [1, 10, 7, 7]             730
+│    └─BatchNorm2d: 2-18                 [1, 10, 7, 7]             20
+│    └─ReLU: 2-19                        [1, 10, 7, 7]             --
+│    └─MaxPool2d: 2-20                   [1, 10, 3, 3]             --
+│    └─Dropout: 2-21                     [1, 10, 3, 3]             --
+├─Linear: 1-4                            [1, 10]                   910
+==========================================================================================
+Total params: 3,130
+Trainable params: 3,130
+Non-trainable params: 0
+Total mult-adds (Units.MEGABYTES): 0.54
+==========================================================================================
+```
+
 ### Layer Configuration
 
 1. **First Convolutional Block** (414 parameters)
